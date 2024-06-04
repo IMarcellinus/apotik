@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import db from './config/Database.js';
 import AuthRoute from './routes/AuthRoute.js';
+import SupplierRoute from './routes/SupplierRoute.js';
 import UserRoute from './routes/UserRoute.js';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(UserRoute);
 app.use(AuthRoute);
+app.use(SupplierRoute);
 
 const startServer = async () => {
     try {

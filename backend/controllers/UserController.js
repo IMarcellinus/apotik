@@ -1,5 +1,4 @@
-// controllers/UserController.js
-// import { response } from "express";
+
 import { Op } from 'sequelize';
 import User from "../models/UserModel.js";
 
@@ -64,11 +63,6 @@ export const createUser = async (req, res) => {
     try {
         // Check for required fields
         const requiredFields = [
-            "name",
-            "email",
-            "tanggal_lahir",
-            "address",
-            "nohp",
             "password",
             "role",
             "username"
@@ -91,7 +85,7 @@ export const createUser = async (req, res) => {
                 message: "Validation error",
                 status_code: 400,
                 errors: error.errors.map((err) => ({
-                    message: err.path === "email" ? "Email already exists" : err.message,
+                    message: err.path === "username" ? "Username already exists" : err.message,
                     path: err.path,
                 })),
             });

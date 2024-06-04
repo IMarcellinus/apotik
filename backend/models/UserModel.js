@@ -10,37 +10,15 @@ const User = db.define('users', {
         autoIncrement: true,
         primaryKey: true
     },
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     username: {
         type: DataTypes.STRING(255),
-        allowNull: false
-    },
-    name: {
-        type: DataTypes.STRING(255),
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING(255),
         allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
-    tanggal_lahir: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        get() {
-            const rawValue = this.getDataValue('tanggal_lahir');
-            return rawValue ? rawValue.toISOString().split('T')[0] : null;
-        }
-    },
-    address: {
-        type: DataTypes.TEXT,
-        allowNull: true
-    },
-    nohp: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING(255),
