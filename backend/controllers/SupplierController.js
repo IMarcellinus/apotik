@@ -25,7 +25,7 @@ export const getSuppliers = async (req, res) => {
 export const createSupplier = async (req, res) => {
   try {
     // Check for required fields
-    const requiredFields = ["company", "name", "email", "no_hp", "address"];
+    const requiredFields = ["company", "supplier_name", "email", "no_hp", "address"];
     for (const field of requiredFields) {
       if (!req.body[field]) {
         return res.status(400).json({ message: `Missing input: ${field}` });

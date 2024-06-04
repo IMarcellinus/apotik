@@ -13,7 +13,7 @@ const Supplier = db.define('suppliers', {
         type: DataTypes.STRING(255),
         allowNull: false
     },
-    name: {
+    supplier_name: {
         type: DataTypes.STRING(255),
         allowNull: false
     },
