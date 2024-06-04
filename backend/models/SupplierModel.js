@@ -18,7 +18,7 @@ const Supplier = db.define('suppliers', {
         allowNull: false
     },
     email: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING(255),
         allowNull: false
     },
     no_hp: {
