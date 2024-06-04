@@ -1,6 +1,6 @@
 ## Tech Stack
 
-**Client:** Redux, TailwindCSS
+**Client:** ReactJs, TailwindCSS
 
 **Server:** Node, Express
 
