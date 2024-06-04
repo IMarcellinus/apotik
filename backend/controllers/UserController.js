@@ -1,11 +1,17 @@
 // controllers/UserController.js
-import { response } from "express";
+// import { response } from "express";
+import { Op } from 'sequelize';
 import User from "../models/UserModel.js";
 
 export const getUsers = async (req, res) => {
     try {
         const users = await User.findAll({
-            attributes: { exclude: ['password'] } // Exclude 'password' column
+            attributes: { exclude: ['password'] }, // Exclude 'password' column
+            where: {
+                role: {
+                    [Op.ne]: 'admin' // Exclude users with role 'admin'
+                }
+            }
         });
 
         if (users.length === 0) {
@@ -26,14 +32,18 @@ export const getUsers = async (req, res) => {
     }
 };
 
-
 export const getUserById = async (req, res) => {
     try {
         const user = await User.findOne({
             where: {
                 id: req.params.id,
+                role: {
+                    [Op.ne]: 'admin' // Exclude users with role 'admin'
+                }
             },
+            attributes: { exclude: ['password'] } // Exclude 'password' column
         });
+
         if (user) {
             res.status(200).json({
                 msg: "User Details",
@@ -48,6 +58,7 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
 
 export const createUser = async (req, res) => {
     try {
