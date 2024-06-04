@@ -7,7 +7,10 @@ import SupplierRoute from './routes/SupplierRoute.js';
 import UserRoute from './routes/UserRoute.js';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*', // Replace with your allowed origin
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Replace with your allowed methods
+  }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(UserRoute);
