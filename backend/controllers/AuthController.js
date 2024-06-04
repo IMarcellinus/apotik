@@ -16,41 +16,24 @@ export const loginUser = async (req, res) => {
 
     if (!passwordIsValid) {
       return res.status(401).send({
-        accessToken: null,
         message: "Invalid Password!",
       });
     }
 
-    const token = jwt.sign({ id: user.id }, "your-secret-key", {
-      expiresIn: 86400, // 24 hours
-    });
-
-    // Set the token as an HTTP-only cookie
-    res.cookie('accessToken', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      maxAge: 86400000, // 24 hours in milliseconds
-    });
+    if (username !== user.username) {
+      return res.status(401).send({
+        message: "Invalid Username!",
+      });
+    }
 
     res.status(200).send({
-      id: user._id,
+      msg: "Login Success",
+      status_code: 200,
       user: user,
-      accessToken: token
     });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 };
 
-
-export const logoutUser = (req, res) => {
-  // Clear the accessToken cookie
-  res.clearCookie('accessToken', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Ensure the secure flag is consistent
-    sameSite: 'strict',
-  });
-
-  res.status(200).send({ message: 'User logged out successfully.' });
-};
 
