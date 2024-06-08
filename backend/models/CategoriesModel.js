@@ -11,7 +11,7 @@ const CategoriesModel = db.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    categories_name: {
+    name: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -32,4 +32,4 @@ const CategoriesModel = db.define(
   }
 );
 
-export default Categories;
+export default CategoriesModel;
