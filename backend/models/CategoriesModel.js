@@ -3,32 +3,15 @@ import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const Supplier = db.define(
-  "suppliers",
+const CategoriesModel = db.define(
+  "categories",
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    company: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    name: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-      unique: true, // Ensuring supplier_name is unique
-    },
-    email: {
-      type: DataTypes.STRING(255),
-      allowNull: false,
-    },
-    no_hp: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    address: {
+    categories_name: {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
@@ -49,4 +32,4 @@ const Supplier = db.define(
   }
 );
 
-export default Supplier;
+export default Categories;

@@ -7,14 +7,14 @@ const ProductModel = db.define("products", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true,
+    primaryKey: true, 
   },
   supplier_name: {
     type: DataTypes.STRING(255),
     allowNull: false,
     references: {
       model: 'suppliers',
-      key: 'supplier_name'
+      key: 'name'
     },
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
@@ -38,10 +38,6 @@ const ProductModel = db.define("products", {
   price: {
     type: DataTypes.INTEGER,
     allowNull: false,
-  },
-  foto: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
   },
   created_at: {
     type: DataTypes.DATE,
