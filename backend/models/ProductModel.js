@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import CategoriesModel from "./CategoriesModel.js";
 
 const { DataTypes } = Sequelize;
 
@@ -19,7 +20,7 @@ const ProductModel = db.define("products", {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   },
-  product_name: {
+  name: {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
@@ -37,6 +38,10 @@ const ProductModel = db.define("products", {
   },
   price: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING(255),
     allowNull: false,
   },
   created_at: {
