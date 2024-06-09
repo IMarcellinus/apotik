@@ -1,56 +1,46 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import User from "../models/UserModel.js";
 
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ where: { username } });
 
     if (!user) {
-      return res.status(404).send({ message: "User not found." });
+      return res.status(404).json({ message: "User not found." });
     }
 
-    const passwordIsValid = bcrypt.compareSync(password, user.password);
+    const passwordIsValid = await bcrypt.compare(password, user.password);
 
     if (!passwordIsValid) {
-      return res.status(401).send({
-        message: "Invalid Password!",
-      });
+      return res.status(401).json({ message: "Invalid Password!" });
     }
 
-    if (username !== user.username) {
-      return res.status(401).send({
-        message: "Invalid Username!",
-      });
-    }
-
-    res.status(200).send({
-      msg: "Login Success",
-      status_code: 200,
-      user: user,
+    res.status(200).json({
+      message: "Login Success",
+      user: {
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      },
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
+
 };
 
 export const registerUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Set default role to "user"
-    const defaultRole = 'user';
-
-    // Hash password using bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user with hashed password and default role
     const newUser = await User.create({
       username,
-      password: hashedPassword,
-      role: defaultRole
+      password,
+      role: 'user' // Set default role to "user"
     });
 
     res.status(201).json(newUser);
@@ -58,4 +48,6 @@ export const registerUser = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 
+
 };
+
