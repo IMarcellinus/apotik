@@ -43,7 +43,6 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 // app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).array('image[]'));
 
-
 app.use(cors({
     origin: '*', // Replace with your allowed origin
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Replace with your allowed methods

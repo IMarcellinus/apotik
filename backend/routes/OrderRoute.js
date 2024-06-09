@@ -3,11 +3,15 @@ import { createOrder, getOrderById, getOrders, getOrdersByType, updateOrderType 
 
 const router = express.Router();
 
+// Bikin Best Practice
+// router.post('/order', createOrder);
+// router.get('/order/:type', getOrders);
+// router.put('/order/:id', updateOrderType);
 
 // Create a new order
 router.post('/order', createOrder);
-// Get all orders
 router.get('/order', getOrders);
+// Get all orders, get by type, get by id
 // Route untuk mendapatkan pesanan berdasarkan tipe
 router.get('/order/type/:type', getOrdersByType);
 // Get order by ID

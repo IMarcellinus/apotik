@@ -3,13 +3,19 @@ import { createProduct, deleteProduct, getCategoriesByProductId, getProductById,
 
 const router = express.Router();
 
-router.get('/products', getProducts);
 router.get("/products/search", getProducts); // Updated route for search by name
-router.get("/products/search/:name", searchProductsByName); // Updated route for search by name
+router.get("/products/search/:name", searchProductsByName);
+router.get('/products', getProducts);
 router.post('/products', createProduct);
 router.put('/products/:id', updateProduct);
 router.delete('/products/:id', deleteProduct);
 router.get('/products/:id', getProductById);
 router.get('/categories/product/:product_id', getCategoriesByProductId);
+
+// Bikin Best Practice
+// router.get('/products/:id/:name/:categories_id', getProducts);
+// router.post('/products', createProduct);
+// router.put('/products/:id', updateProduct);
+// router.delete('/products/:id', deleteProduct);
 
 export default router;

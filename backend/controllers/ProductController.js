@@ -22,16 +22,30 @@ export const getProducts = async (req, res) => {
       });
     }
 
+    // Append image URL to each product and exclude the image field
+    const productsWithImageUrl = products.map(product => {
+      const { image, ...productData } = product.toJSON();
+      
+      // Split the image string into an array of filenames and map to URLs
+      const imageUrlArray = image.split(',').map(img => ({ imageUrl: `http://localhost:5000/${img}` }));
+      
+      return {
+        ...productData,
+        imageUrl: imageUrlArray
+      };
+    });
+
     res.status(200).json({
-      msg: "products List",
+      msg: "Products List",
       status_code: 200,
-      products: products,
+      products: productsWithImageUrl,
     });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const getProductById = async (req, res) => {
   try {
