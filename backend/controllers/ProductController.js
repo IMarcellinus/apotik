@@ -31,6 +31,37 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findByPk(id, {
+      include: [
+        {
+          model: Category,
+          through: { attributes: [] }, // Exclude join table attributes
+        },
+      ],
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        msg: "Product not found",
+        status_code: 404,
+      });
+    }
+
+    res.status(200).json({
+      msg: "Product details",
+      status_code: 200,
+      product: product,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
 export const createProduct = async (req, res) => {
   try {
     const { supplier_name, categories_ids, name, description, stok, satuan, price } = req.body;
@@ -122,8 +153,9 @@ export const updateProduct = async (req, res) => {
 
     // Check if all categories exist if categories_ids are being updated
     if (categories_ids) {
-      const categories = await Category.findAll({ where: { id: categories_ids } });
-      if (categories.length !== categories_ids.length) {
+      const categoryIdsArray = JSON.parse(categories_ids);
+      const categories = await Category.findAll({ where: { id: categoryIdsArray } });
+      if (categories.length !== categoryIdsArray.length) {
         return res.status(400).json({
           msg: "One or more categories not found",
           status_code: 400,
@@ -131,15 +163,33 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    // Update product data
-    const [updatedRows] = await Product.update({
+    // Collect image paths from the uploaded files, if any
+    const imagePaths = req.files ? req.files.map(file => file.path) : [];
+
+    // Check if all required fields are provided (or updated)
+    if ((!name && !description && !stok && !satuan && !price && imagePaths.length === 0) && !supplier_name && !categories_ids) {
+      return res.status(400).json({
+        msg: "At least one field is required to update",
+        status_code: 400,
+      });
+    }
+
+    const productData = {
       supplier_name,
       name,
       description,
       stok,
       satuan,
       price,
-    }, {
+    };
+
+    // Include image paths if there are new images
+    if (imagePaths.length > 0) {
+      productData.image = imagePaths.join(',');
+    }
+
+    // Update product data
+    const [updatedRows] = await Product.update(productData, {
       where: { id }
     });
 
@@ -154,7 +204,7 @@ export const updateProduct = async (req, res) => {
 
     // Update associations with categories if provided
     if (categories_ids) {
-      const categories = await Category.findAll({ where: { id: categories_ids } });
+      const categories = await Category.findAll({ where: { id: JSON.parse(categories_ids) } });
       await updatedProduct.setCategories(categories);
     }
 
@@ -177,9 +227,8 @@ export const updateProduct = async (req, res) => {
     console.error("Error updating product:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
-
-
 };
+
 
 export const deleteProduct = async (req, res) => {
   try {
