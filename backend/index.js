@@ -7,6 +7,7 @@ import db from './config/Database.js';
 import './models/associations.js'; // Import associations
 import AuthRoute from './routes/AuthRoute.js';
 import CategorieRoute from './routes/CategorieRoute.js';
+import OrderRoute from './routes/OrderRoute.js';
 import ProductRoute from './routes/ProductRoute.js';
 import SupplierRoute from './routes/SupplierRoute.js';
 import UserRoute from './routes/UserRoute.js';
@@ -55,6 +56,7 @@ app.use(AuthRoute);
 app.use(SupplierRoute);
 app.use(ProductRoute);
 app.use(CategorieRoute);
+app.use(OrderRoute);
 
 // Error-handling middleware for Multer errors
 app.use((err, req, res, next) => {

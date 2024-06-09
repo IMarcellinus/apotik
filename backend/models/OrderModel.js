@@ -1,19 +1,20 @@
+// OrderModel.js
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
 
 const { DataTypes } = Sequelize;
 
-const ProductModel = db.define("products", {
+const OrderModel = db.define("orders", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
-    primaryKey: true, 
+    primaryKey: true,
   },
-  supplier_name: {
+  product_name: {
     type: DataTypes.STRING(255),
     allowNull: false,
     references: {
-      model: 'suppliers',
+      model: 'products',
       key: 'name'
     },
     onDelete: 'CASCADE',
@@ -22,31 +23,46 @@ const ProductModel = db.define("products", {
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    unique: true,
   },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  stok: {
+  quantity: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  satuan: {
-    type: DataTypes.STRING(255),
+  status: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   price: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
   },
   image: {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: Sequelize.NOW,
+  type: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  noresi: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  no_hp: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  alamat: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  note: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
   },
 }, {
   freezeTableName: true,
@@ -55,4 +71,4 @@ const ProductModel = db.define("products", {
   updatedAt: "updated_at"
 });
 
-export default ProductModel;
+export default OrderModel;

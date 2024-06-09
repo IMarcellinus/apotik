@@ -36,4 +36,26 @@ export const loginUser = async (req, res) => {
   }
 };
 
+export const registerUser = async (req, res) => {
+  const { username, password } = req.body;
 
+  try {
+    // Set default role to "user"
+    const defaultRole = 'user';
+
+    // Hash password using bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new user with hashed password and default role
+    const newUser = await User.create({
+      username,
+      password: hashedPassword,
+      role: defaultRole
+    });
+
+    res.status(201).json(newUser);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+
+};
