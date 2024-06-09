@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import Category from "../models/CategoriesModel.js";
+import ProductCategory from "../models/ProductCategoryModel.js";
 import Product from "../models/ProductModel.js";
 import Supplier from "../models/SupplierModel.js";
 
@@ -324,6 +325,59 @@ export const searchProductsByName = async (req, res) => {
     });
   } catch (error) {
     console.error("Error searching products by name:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getCategoriesByProductId = async (req, res) => {
+  try {
+    const { product_id } = req.params;
+
+    // Find the product entry by product_id
+    const product = await Product.findByPk(product_id, {
+      include: [
+        {
+          model: Category,
+          through: { attributes: [] }, // Exclude join table attributes
+        },
+      ],
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        msg: "Product not found for the given product ID",
+        status_code: 404,
+      });
+    }
+
+    // Find category IDs associated with the given product ID
+    const productCategoryEntries = await ProductCategory.findAll({
+      where: { product_id: product_id },
+    });
+
+    // Extract category IDs from the result
+    const categoryIds = productCategoryEntries.map(entry => entry.category_id);
+
+    // Find categories with the extracted category IDs
+    const categories = await Category.findAll({
+      where: { id: categoryIds },
+    });
+
+    if (categories.length === 0) {
+      return res.status(404).json({
+        msg: "No categories found for the given product ID",
+        status_code: 404,
+      });
+    }
+
+    res.status(200).json({
+      msg: `Categories for Product ID ${product_id}`,
+      status_code: 200,
+      product_name: product.name,
+      categories: categories,
+    });
+  } catch (error) {
+    console.error("Error retrieving categories by product ID:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
