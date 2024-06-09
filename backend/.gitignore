@@ -26,7 +26,3 @@ logs
 .env*
 
 # Ignore the images folder and its contents
-images/
-*.jpg
-*.png
-*.jpeg
