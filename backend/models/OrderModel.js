@@ -36,10 +36,6 @@ const OrderModel = db.define("orders", {
     type: DataTypes.BIGINT,
     allowNull: false,
   },
-  image: {
-    type: DataTypes.STRING(255),
-    allowNull: false,
-  },
   type: {
     type: DataTypes.INTEGER,
     allowNull: false,

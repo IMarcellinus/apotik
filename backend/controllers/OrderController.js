@@ -27,16 +27,12 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    // Collect image paths from the uploaded files
-    const imagePaths = req.files.map((file) => file.path);
-
     if (
         !name ||
         !product_name ||
         !quantity ||
         !status ||
         !price ||
-        imagePaths.length === 0 ||
         !type ||
         !noresi ||
         !no_hp ||
@@ -57,7 +53,6 @@ export const createOrder = async (req, res) => {
       quantity,
       status,
       price,
-      image: imagePaths.join(","),
       type,
       noresi,
       no_hp,
@@ -121,3 +116,69 @@ export const getOrderById = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const updateOrderType = async (req, res) => {
+  try {
+    const { type } = req.body; // Mendapatkan nilai type dari body request
+    const { id } = req.params; // Mendapatkan id pesanan dari parameter route
+
+    // Periksa apakah ada nilai type yang diberikan
+    if (!type) {
+      return res.status(400).json({
+        msg: "Type is required",
+        status_code: 400,
+      });
+    }
+
+    // Perbarui pesanan hanya untuk kolom type
+    const [updatedRows] = await Order.update({ type }, {
+      where: { id }, // Filter pesanan berdasarkan id
+    });
+
+    // Periksa apakah ada pesanan yang diperbarui
+    if (updatedRows === 0) {
+      return res.status(404).json({
+        msg: "Order not found",
+        status_code: 404,
+      });
+    }
+
+    // Dapatkan pesanan yang diperbarui
+    const updatedOrder = await Order.findByPk(id);
+
+    res.status(200).json({
+      msg: "Order type updated successfully",
+      status_code: 200,
+      order: updatedOrder,
+    });
+  } catch (error) {
+    console.error("Error updating order type:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+export const getOrdersByType = async (req, res) => {
+  try {
+    const { type } = req.params; // Dapatkan nilai tipe dari parameter rute
+    const orders = await Order.findAll({ where: { type: {
+      [Sequelize.Op.like]: `%${type}%`
+    } } }); // Cari pesanan berdasarkan tipe
+
+    if (orders.length === 0) {
+      return res.status(404).json({
+        msg: "No orders found for the specified type",
+        status_code: 404,
+      });
+    }
+
+    res.status(200).json({
+      msg: `Orders with type ${type}`,
+      status_code: 200,
+      orders,
+    });
+  } catch (error) {
+    console.error("Error fetching orders by type:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
