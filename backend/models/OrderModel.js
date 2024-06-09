@@ -46,7 +46,7 @@ const OrderModel = db.define("orders", {
   },
   noresi: {
     type: DataTypes.STRING(255),
-    allowNull: true,
+    allowNull: false,
   },
   no_hp: {
     type: DataTypes.INTEGER,
@@ -62,7 +62,7 @@ const OrderModel = db.define("orders", {
   },
   note: {
     type: DataTypes.STRING(255),
-    allowNull: true,
+    allowNull: false,
   },
 }, {
   freezeTableName: true,

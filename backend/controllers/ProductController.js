@@ -87,6 +87,15 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    // Check if product with the same name already exists
+    const existingProduct = await Product.findOne({ where: { name } });
+    if (existingProduct) {
+      return res.status(400).json({
+        msg: "Product with the same name already exists",
+        status_code: 400,
+      });
+    }
+
     // Check if all categories exist
     const categoryIdsArray = JSON.parse(categories_ids); // Parse the categories_ids string to array
     const categories = await Category.findAll({
@@ -150,6 +159,7 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const updateProduct = async (req, res) => {
   try {
