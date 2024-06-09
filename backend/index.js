@@ -39,7 +39,9 @@ const fileFilter = (req, file, cb) => {
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 // Update multer to accept the 'image' field
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+// app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).array('image[]'));
+
 
 app.use(cors({
     origin: '*', // Replace with your allowed origin
@@ -59,7 +61,7 @@ app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {
         // A Multer error occurred when uploading.
         if (err.code === 'LIMIT_UNEXPECTED_FILE') {
-            return res.status(400).json({ message: 'Unexpected field' });
+            return res.status(400).json(err);
         }
         // Handle other Multer errors
         return res.status(400).json({ message: err.message });

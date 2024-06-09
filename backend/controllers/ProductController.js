@@ -34,7 +34,6 @@ export const getProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
     const { supplier_name, categories_ids, name, description, stok, satuan, price } = req.body;
-    const imageFile = req.file; // Get the uploaded file
 
     // Log received categories_ids
     console.log("Received categories_ids:", categories_ids);
@@ -58,16 +57,16 @@ export const createProduct = async (req, res) => {
       });
     }
 
+    // Collect image paths from the uploaded files
+    const imagePaths = req.files.map(file => file.path);
+
     // Check if all required fields are provided
-    if (!name || !description || !stok || !satuan || !price || !imageFile) {
+    if (!name || !description || !stok || !satuan || !price || imagePaths.length === 0) {
       return res.status(400).json({
         msg: "All fields are required",
         status_code: 400,
       });
     }
-
-    // If all validations pass, then proceed to upload the image and create the product
-    const image = imageFile.path;
 
     const product = await Product.create({
       supplier_name,
@@ -76,7 +75,7 @@ export const createProduct = async (req, res) => {
       stok,
       satuan,
       price,
-      image, // Include the image in the product creation
+      image: imagePaths.join(','), // Include the image in the product creation
     });
 
     // Create associations with categories
