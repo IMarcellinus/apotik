@@ -8,7 +8,6 @@ export const createOrder = async (req, res) => {
       product_name,
       name,
       quantity,
-      status,
       price,
       type,
       noresi,
@@ -27,31 +26,12 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    if (
-        !name ||
-        !product_name ||
-        !quantity ||
-        !status ||
-        !price ||
-        !type ||
-        !noresi ||
-        !no_hp ||
-        !email ||
-        !alamat ||
-        !note 
-      ) {
-        return res.status(400).json({
-          msg: "All fields are required",
-          status_code: 400,
-        });
-      }
-
     // Create the order
     const order = await Order.create({
       product_name,
       name,
       quantity,
-      status,
+      status: 0,
       price,
       type,
       noresi,
@@ -74,7 +54,39 @@ export const createOrder = async (req, res) => {
 
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.findAll();
+    const { type, id } = req.query;
+    let orders;
+
+    // Jika ada query 'id'
+    if (id) {
+      orders = await Order.findAll({ where: { id } });
+    }
+    // Jika ada query 'type'
+    else if (type) {
+      // type 0 -> get all orders
+      if (type === '0') {
+        orders = await Order.findAll();
+      }
+      // type 1 -> tampilkan type 1
+      else if (type === '1') {
+        orders = await Order.findAll({ where: { type: 1 } });
+      }
+      // type 2 -> tampilkan type 2
+      else if (type === '2') {
+        orders = await Order.findAll({ where: { type: 2 } });
+      }
+      // Jika nilai type tidak valid
+      else {
+        return res.status(400).json({
+          msg: "Invalid type value",
+          status_code: 400,
+        });
+      }
+    }
+    // Jika tidak ada query, tampilkan semua orders
+    else {
+      orders = await Order.findAll();
+    }
 
     if (orders.length === 0) {
       return res.status(400).json({
@@ -93,6 +105,8 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
 
 export const getOrderById = async (req, res) => {
   try {
@@ -117,21 +131,21 @@ export const getOrderById = async (req, res) => {
   }
 };
 
-export const updateOrderType = async (req, res) => {
+export const updateOrder = async (req, res) => {
   try {
-    const { type } = req.body; // Mendapatkan nilai type dari body request
+    const { type, noresi } = req.body; // Mendapatkan nilai type dan noresi dari body request
     const { id } = req.params; // Mendapatkan id pesanan dari parameter route
 
-    // Periksa apakah ada nilai type yang diberikan
-    if (!type) {
+    // Periksa apakah ada nilai type dan noresi yang diberikan
+    if (!type || !noresi) {
       return res.status(400).json({
-        msg: "Type is required",
+        msg: "Type and noresi are required",
         status_code: 400,
       });
     }
 
-    // Perbarui pesanan hanya untuk kolom type
-    const [updatedRows] = await Order.update({ type }, {
+    // Perbarui pesanan untuk kolom type dan noresi
+    const [updatedRows] = await Order.update({ type, noresi }, {
       where: { id }, // Filter pesanan berdasarkan id
     });
 
@@ -147,15 +161,16 @@ export const updateOrderType = async (req, res) => {
     const updatedOrder = await Order.findByPk(id);
 
     res.status(200).json({
-      msg: "Order type updated successfully",
+      msg: "Order type and noresi updated successfully",
       status_code: 200,
       order: updatedOrder,
     });
   } catch (error) {
-    console.error("Error updating order type:", error.message);
+    console.error("Error updating order type and noresi:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const getOrdersByType = async (req, res) => {
   try {
