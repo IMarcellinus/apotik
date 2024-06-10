@@ -17,11 +17,5 @@ router.get('/order', getOrders);
 router.post('/order', createOrder);
 // Update order by type by ID
 router.put('/order/:id', updateOrder);
-// Get all orders, get by type, get by id
-// Route untuk mendapatkan pesanan berdasarkan tipe
-// router.get('/order/type/:type', getOrdersByType);
-// Get order by ID
-// router.get('/order/:id', getOrderById);
-
 
 export default router;
