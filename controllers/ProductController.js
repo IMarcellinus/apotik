@@ -1,6 +1,6 @@
 import { Op, Sequelize } from "sequelize";
 import Category from "../models/CategoriesModel.js";
-import ProductCategory from "../models/ProductCategoryModel.js";
+// import ProductCategory from "../models/ProductCategoryModel.js";
 import Product from "../models/ProductModel.js";
 import Supplier from "../models/SupplierModel.js";
 
@@ -180,39 +180,6 @@ export const getProducts = async (req, res) => {
   }
 };
 
-
-
-
-export const getProductById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const product = await Product.findByPk(id, {
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (!product) {
-      return res.status(404).json({
-        msg: "Product not found",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: "Product details",
-      status_code: 200,
-      product: product,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
 export const createProduct = async (req, res) => {
   try {
     const {
@@ -309,7 +276,6 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 
 export const updateProduct = async (req, res) => {
   try {
@@ -449,158 +415,6 @@ export const deleteProduct = async (req, res) => {
     });
   } catch (error) {
     console.error("Error deleting product:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const searchProductsByName = async (req, res) => {
-  try {
-    const { name } = req.params;
-    
-    const products = await Product.findAll({
-      where: {
-        name: {
-          [Sequelize.Op.like]: `%${name}%` // Use Sequelize's Op.like for partial match
-        }
-      },
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (products.length === 0) {
-      return res.status(404).json({
-        msg: "No products found",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: `Products List ${name}`,
-      status_code: 200,
-      products: products,
-    });
-  } catch (error) {
-    console.error("Error searching products by name:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const getCategoriesByProductId = async (req, res) => {
-  try {
-    const { product_id } = req.params;
-
-    // Find the product entry by product_id
-    const product = await Product.findByPk(product_id, {
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (!product) {
-      return res.status(404).json({
-        msg: "Product not found for the given product ID",
-        status_code: 404,
-      });
-    }
-
-    // Find category IDs associated with the given product ID
-    const productCategoryEntries = await ProductCategory.findAll({
-      where: { product_id: product_id },
-    });
-
-    // Extract category IDs from the result
-    const categoryIds = productCategoryEntries.map(entry => entry.category_id);
-
-    // Find categories with the extracted category IDs
-    const categories = await Category.findAll({
-      where: { id: categoryIds },
-    });
-
-    if (categories.length === 0) {
-      return res.status(404).json({
-        msg: "No categories found for the given product ID",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: `Categories for Product ID ${product_id}`,
-      status_code: 200,
-      product_name: product.name,
-      categories: categories,
-    });
-  } catch (error) {
-    console.error("Error retrieving categories by product ID:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const getProductsByCategoryId = async (req, res) => {
-  try {
-    const { category_id } = req.params;
-
-    // Find the category entry by category_id
-    const category = await Category.findByPk(category_id);
-
-    if (!category) {
-      return res.status(404).json({
-        msg: "Category not found for the given category ID",
-        status_code: 404,
-      });
-    }
-
-    // Find product IDs associated with the given category ID
-    const productCategoryEntries = await ProductCategory.findAll({
-      where: { category_id: category_id },
-    });
-
-    // Extract product IDs from the result
-    const productIds = productCategoryEntries.map(entry => entry.product_id);
-
-    // Find products with the extracted product IDs
-    const products = await Product.findAll({
-      where: { id: productIds },
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (products.length === 0) {
-      return res.status(404).json({
-        msg: "No products found for the given category ID",
-        status_code: 404,
-      });
-    }
-
-    // Append image URL to each product and exclude the image field
-    const productsWithImageUrl = products.map(product => {
-      const { image, ...productData } = product.toJSON();
-      const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
-
-      return {
-        ...productData,
-        imageUrl: imageUrlArray
-      };
-    });
-
-    res.status(200).json({
-      msg: `Products for Category ID ${category_id}`,
-      status_code: 200,
-      category_name: category.name,
-      products: productsWithImageUrl,
-    });
-  } catch (error) {
-    console.error("Error retrieving products by category ID:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
