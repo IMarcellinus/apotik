@@ -2,12 +2,25 @@ import Categories from "../models/CategoriesModel.js";
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await Categories.findAll();
+    let categories;
+
+    // Cek apakah ada query 'name'
+    if (req.query.name) {
+      // Jika ada query 'name', cari kategori berdasarkan nama
+      categories = await Categories.findAll({
+        where: {
+          name: req.query.name
+        }
+      });
+    } else {
+      // Jika tidak ada query 'name', tampilkan semua kategori
+      categories = await Categories.findAll();
+    }
 
     if (categories.length === 0) {
-      return res.status(400).json({
+      return res.status(404).json({
         msg: "No categories found",
-        status_code: 400,
+        status_code: 404,
       });
     }
 
@@ -17,9 +30,10 @@ export const getCategories = async (req, res) => {
       categories: categories,
     });
   } catch (error) {
-    console.log(error.message);
+    console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+
 };
 
 export const createCategory = async (req, res) => {
