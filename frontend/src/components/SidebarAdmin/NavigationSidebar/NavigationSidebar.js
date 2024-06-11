@@ -12,8 +12,9 @@ const NavigationSidebar = ({
   isWide,
 }) => {
   const { pathname } = useLocation();
-  const pathValid = isValidPath(base, pathname);
+  const pathValid = isValidPath(children?.map((c) => c.path), pathname);
   const [open, setOpen] = React.useState(pathValid);
+  console.log(pathValid)
   const handleClickWindow = (e) => {
     e.stopPropagation();
     setOpen(!open);
@@ -41,7 +42,7 @@ const NavigationSidebar = ({
         className={({ isActive }) =>
           `${isActive ? "bg-slate-500" : "bg-slate-900"} ${
             !isWide && "justify-center"
-          } flex items-center rounded-md p-2`
+          } flex items-center rounded-md p-2 text-white`
         }
       >
         <div className="flex items-center gap-x-4">
@@ -56,7 +57,7 @@ const NavigationSidebar = ({
     <div
       className={`${isWide && (open ? "max-h-[133px]" : "max-h-[41px]")} ${
         isWide ? "overflow-hidden" : ""
-      } rounded-md transition-all duration-1000 relative cursor-default`}
+      } rounded-md transition-all duration-1000 relative cursor-default text-white`}
     >
       <div
         className={`${pathValid ? "bg-slate-500" : "bg-slate-900"} ${
@@ -89,7 +90,7 @@ const NavigationSidebar = ({
             onClick={handleNavigation}
           >
             <div className="flex items-center gap-x-4">
-              <div>{item.title}</div>
+              <div className="text-white">{item.title}</div>
             </div>
           </NavLink>
         ))}

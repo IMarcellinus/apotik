@@ -5,7 +5,6 @@ import Swal from 'sweetalert2'
 
 const Action = ({ value, row }) => {
   const { handleChangeStatus, handleOpenModal, setId, handleDetail, handleOpenDibayar} = useOrderContext()
-  console.log(row)
   const actions = [
     {
       type: 'Accept',
