@@ -32,7 +32,7 @@ const AboutAppoinment = () => {
                               </li>
                            </ul>
                         </div>
-                        <Link to="/login" className="primary_btn mt-40">Konsultasi Dokter</Link>
+                        <Link to="/login" className="primary_btn mt-40">Konsultasi Apoteker</Link>
                      </div>
                   </div>
                </div>

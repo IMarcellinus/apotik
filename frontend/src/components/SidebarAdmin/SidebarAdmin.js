@@ -2,8 +2,10 @@ import { useState } from "react";
 import { MdOutlineCloseFullscreen, MdOutlineOpenInFull } from "react-icons/md";
 import { AiFillAlert } from "react-icons/ai";
 import NavigationSidebar from "./NavigationSidebar/NavigationSidebar";
+import { useAuthContext } from "../../context/AuthContext/AuthContext";
 
 const Sidebar = ({ isWide, setIsWide }) => {
+  const { handleLogout } = useAuthContext()
   const routes = [
     {
       title: "Obat",
@@ -67,6 +69,9 @@ const Sidebar = ({ isWide, setIsWide }) => {
             ))}
           </div>
         </div>
+      <div>
+        <button onClick={handleLogout} className="btn btn-primary !bg-red-600 mt-4 !w-full">Logout</button>
+      </div>
       </div>
     </aside>
   );

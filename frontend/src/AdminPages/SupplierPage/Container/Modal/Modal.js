@@ -5,9 +5,9 @@ import FooterModal from './Footer/Footer'
 import { useSupplierContext } from '../../../../context/SupplierContext/SupplierContext'
 
 const Modal = () => {
-  const { isOpen, handleCloseModal } = useSupplierContext()
+  const { isOpen, handleCloseModal, isEdit } = useSupplierContext()
   return (
-    <ModalComponent isOpen={isOpen} onClose={handleCloseModal} title={"Tambah Supplier"} body={<BodyModal />} footer={<FooterModal />} />
+    <ModalComponent isOpen={isOpen} onClose={handleCloseModal} title={isEdit ? "Edit Supplier" : "Tambah Supplier"} body={<BodyModal />} footer={<FooterModal />} />
   )
 }
 

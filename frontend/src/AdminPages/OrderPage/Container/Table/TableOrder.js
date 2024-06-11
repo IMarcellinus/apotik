@@ -3,9 +3,10 @@ import ReusableTable from '../../../../components/ReusableTable/ReusableTable'
 import { toRupiah } from '../../../../utils/Money'
 import Action from './Action/Action'
 import { useOrderContext } from '../../../../context/OrderContext/OrderContext'
+import useDebounce from '../../../../hooks/useDebounce'
 
 const TableOrder = () => {
-    const { orders: data } = useOrderContext()
+    const { orders: data, handleGetOrders, typeFilter } = useOrderContext()
     const statusOrder = (value) => {
         switch (value) {
             case 0:
@@ -54,6 +55,7 @@ const TableOrder = () => {
             Cell: Action
         }
     ]
+    useDebounce(handleGetOrders, 500, [typeFilter])
   return (
     <ReusableTable data={data} columns={columns} />
   )

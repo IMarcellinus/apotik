@@ -23,7 +23,7 @@ const HomeOurTeam = () => {
                      </div>
                   </div>
                </div>
-               <div className="row">
+               {/* <div className="row">
 
                   <HomeSingleTeam image="1" title="Monkey D. Luffy" subtitle="Founder" />
                   <HomeSingleTeam image="2" title="Roronoa Zoro" subtitle="bedah neurologi" />
@@ -32,7 +32,7 @@ const HomeOurTeam = () => {
                   <HomeSingleTeam image="5" title="Sanji" subtitle="spesialis mata" />
                   <HomeSingleTeam image="6" title="Tony Tony Chopper" subtitle="kanker" />
 
-               </div>
+               </div> */}
             </div>
          </section>
       </>

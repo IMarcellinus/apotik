@@ -14,7 +14,7 @@ const HomeFooter = () => {
                                         
                                     </div>
                                     <div className="footer-logo mb-35">
-                                        <Link to="/"><img src="img/logo/footer-logo.png" alt=""/></Link>
+                                        <Link to="/"><img src="/img/logo/footer-logo.png" alt=""/></Link>
                                     </div>
                                     <div className="footer-contact-content mb-25">
                                         <p>Selamat datang di Apotek Heal Care, mitra terpercaya Anda dalam kesehatan dan kesejahteraan. Di Heal Care, kami berdedikasi untuk menyediakan layanan dan produk farmasi berkualitas tinggi yang memenuhi semua kebutuhan kesehatan Anda. Misi kami adalah memastikan bahwa Anda memiliki akses ke obat-obatan yang aman, efektif, dan terjangkau, bersama dengan saran ahli dan perawatan yang dipersonalisasi.</p>

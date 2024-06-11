@@ -48,7 +48,7 @@ const Sidebar = ({ show, handleClose }) => {
                      triggerOpenedClassName="icon_close" triggerClassName="iconAdd" open={false}>
                      <ul className="sidebar_sub_menu text-white mt-3">
                         <li><NavLink to="/about">Tentang</NavLink></li>
-                        <li><NavLink to="/appoinment">Konsultasi Dokter</NavLink></li>
+                        <li><NavLink to="/appoinment">Konsultasi Apoteker</NavLink></li>
                         <li><NavLink to="/contact">Kontak</NavLink></li>
                      </ul>
                   </Collapsible>

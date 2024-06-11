@@ -48,7 +48,7 @@ const ProductContextProvider = ({ children }) => {
     try {
       const response = await getProdukObat({
         search,
-        category_id: categories,
+        category_id: categories?.value || categories,
       });
       setProducts(response.products);
     } catch (error) {
@@ -193,7 +193,7 @@ const ProductContextProvider = ({ children }) => {
     oneProduct,
   };
   
-  useDebounce(handleGetProducts, 500, [search, categories]);
+  // useDebounce(handleGetProducts, 500, [search, categories]);
 
   return (
     <ProductContext.Provider value={valueContext}>

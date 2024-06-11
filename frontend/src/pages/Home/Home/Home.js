@@ -7,17 +7,20 @@ import HomeHeader from './HomeHeader/HomeHeader';
 import HomeHeroSection from './HomeHeroSection/HomeHeroSection';
 import HomeOurTeam from './HomeOurTeam/HomeOurTeam';
 import HomeServices from './HomeServices/HomeServices';
+import CategoriesContextProvider from '../../../context/CategoriesContext/CategoriesContext';
 
 const Home = () => {
     return (
         <>
+        <CategoriesContextProvider>
             <HomeHeroSection/>
             <HomeAboutArea/>
             <HomeServices/>
-            <HomeOurTeam/>
+            {/* <HomeOurTeam/> */}
             <HomeFact/>
             <HomeCta/>
             <Footer/>
+        </CategoriesContextProvider>
         </>
     );
 };

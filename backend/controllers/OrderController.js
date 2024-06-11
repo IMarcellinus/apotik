@@ -16,18 +16,27 @@ export const createOrder = async (req, res) => {
       note,
     } = req.body;
 
-    // Check if type is 2 and if product_name is provided
-    if (type === 2 && !product_name) {
-      return res.status(400).json({
-        msg: "Product name is required for type 2 orders",
-        status_code: 400,
-      });
-    }
+    let imagePaths = [];
 
-    // Check if product exists only if type is 2
-    let product;
-    if (type === 2) {
-      product = await Product.findOne({ where: { name: product_name } });
+    // If type is 2, process the images and skip product_name check
+    if (type == 2) {
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({
+          msg: "Images are required for type 2",
+          status_code: 400,
+        });
+      }
+      imagePaths = req.files.map((file) => file.path);
+    } else {
+      // For other types, product_name is required
+      if (!product_name) {
+        return res.status(400).json({
+          msg: "Product name is required",
+          status_code: 400,
+        });
+      }
+      // Check if product exists
+      const product = await Product.findOne({ where: { name: product_name } });
       if (!product) {
         return res.status(400).json({
           msg: "Product not found",
@@ -36,11 +45,9 @@ export const createOrder = async (req, res) => {
       }
     }
 
-    const imagePaths = req.files.map((file) => file.path);
-
     // Create the order
     const order = await Order.create({
-      product_name,
+      product_name: type === 2 ? null : product_name,
       name,
       quantity,
       status: 0,
@@ -185,18 +192,18 @@ export const updateOrder = async (req, res) => {
     }
 
     // Prepare the update object
-    let updateData = { type };
+    let updateData = {};
 
     // Set status based on type
-    if (type === 1) {
+    if (type == 1) {
       updateData.status = 1;
       updateData.price = price;
-    } else if (type === 2 && noresi) {
+    } else if (type == 2 && noresi) {
       updateData.status = 2;
       updateData.noresi = noresi;
-    } else if (type === 3) {
+    } else if (type == 3) {
       updateData.status = 3;
-    } else if (type === 2 && !noresi) {
+    } else if (type == 2 && !noresi) {
       return res.status(400).json({
         msg: "noresi is required for type 2",
         status_code: 400,

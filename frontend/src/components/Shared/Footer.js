@@ -11,7 +11,7 @@ const Footer = () => {
                      <div className="col-xl-4 col-lg-6 col-md-6">
                         <div className="footer-contact-info footer-contact-info-3 mb-40">
                            <div className="footer-logo mb-35">
-                              <Link to="/"><img src="img/logo/footer-logo-3.png" alt="" /></Link>
+                              <Link to="/"><img src="/img/logo/footer-logo-3.png" alt="" /></Link>
                            </div>
                            <div className="footer-contact-content mb-25">
                               <p>Apotek online pertama di Indonesia. Buka 24 jam untuk melayani anda. Solusi terpercaya kesehatan keluarga anda.</p>

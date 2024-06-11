@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 
-const useDebounce = (callback, delay, deps, isAllow) => {
+const useDebounce = (callback, delay, deps) => {
   const [first, setFirst] = React.useState(true);
   React.useEffect(() => {
-    // if (!isAllow) return;
     if (first) {
       callback();
       setFirst(false);

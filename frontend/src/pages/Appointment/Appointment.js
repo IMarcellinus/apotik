@@ -8,7 +8,7 @@ import BookAppoinment from './BookAppoinment/BookAppoinment';
 const Appointment = () => {
     return (
         <>
-            <CommonPageHeader title="Konsultasi Dokter" subtitle="Konsultasi" />
+            <CommonPageHeader title="Konsultasi Apoteker" subtitle="Konsultasi" />
             <AppointmentArea/>
             <BookAppoinment/>
             <Footer/>

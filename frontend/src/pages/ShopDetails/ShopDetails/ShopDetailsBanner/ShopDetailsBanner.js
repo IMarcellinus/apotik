@@ -32,7 +32,7 @@ const ShopDetailsBanner = () => {
                         <ul className="nav" id="myTab2" role="tablist">
                            {oneProduct.imageUrl && oneProduct.imageUrl.map((item, index) => (
                               <li className="nav-item" key={index}>
-                                 <a className="nav-link active" id={`home-tab${index}`} data-bs-toggle="tab"
+                                 <a className={`nav-link ${index === 0 ? 'active' : ''}`} id={`home-tab${index}`} data-bs-toggle="tab"
                                     href={`#home${index}`} role="tab" aria-selected="true"><img
                                     src={item} alt=""/></a>
                               </li>
@@ -54,7 +54,7 @@ const ShopDetailsBanner = () => {
                      <div className="product-details-img mb-30">
                         <div className="tab-content" id="myTabContent2">
                            {oneProduct.imageUrl && oneProduct.imageUrl.map((item, index) => (
-                              <div className="tab-pane fade show active" id={`home${index}`} role="tabpanel"
+                              <div className={`tab-pane fade ${index === 0 ? 'show active' : ''}`} id={`home${index}`} role="tabpanel"
                                  key={index}>
                                  <img src={item} alt=""/>
                               </div>

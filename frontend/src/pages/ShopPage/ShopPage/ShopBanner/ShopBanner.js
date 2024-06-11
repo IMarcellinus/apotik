@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import SingleShop from '../../../../components/SingleShop/SingleShop';
 import AsyncSelect from 'react-select/async';
 import { getCategory } from '../../../../services/Category/api';
@@ -8,11 +8,14 @@ import { useOrderContext } from '../../../../context/OrderContext/OrderContext';
 import ModalOrder from './Modal';
 import { useAuthContext } from '../../../../context/AuthContext/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import useDebounce from '../../../../hooks/useDebounce';
 
 const ShopBanner = () => {
-   const { setCategories, products } = useProductContext()
+   const { setCategories, products, categories, handleGetProducts } = useProductContext()
    const { handleOpenResep: openResep } = useOrderContext()
    const { isLogin } = useAuthContext()
+   const searchParams = useMemo(() => new URLSearchParams(window.location.search), [])
+   console.log(searchParams.get("id"))
    const navigate = useNavigate()
    const handleOpenResep = () => {
       if (!isLogin) {
@@ -36,8 +39,16 @@ const ShopBanner = () => {
          setCategories("")
          return
       }
-      setCategories(value.value)
+      setCategories(value)
     }
+  useDebounce(handleGetProducts, 500, [categories]);
+
+    useEffect(() => {
+      setCategories({
+        label: searchParams.get("name"),
+        value: searchParams.get("id")
+      })
+    }, [searchParams])
    return (
       <>
          <section className="shop-banner-area pt-120 pb-120">
@@ -46,7 +57,7 @@ const ShopBanner = () => {
                   <ButtonAdd handleClick={handleOpenResep} title={"Order By Resep"} />
                </div>
                <div className="row mt-20 mb-4">
-                  <AsyncSelect isClearable onChange={onChangeKategori} loadOptions={loadOptionsKategori} placeholder="Pilih Kategori" defaultOptions />
+                  <AsyncSelect value={categories} isClearable onChange={onChangeKategori} loadOptions={loadOptionsKategori} placeholder="Pilih Kategori" defaultOptions />
                   {/* <div className="col-xl-4 col-lg-5 col-md-6">
                      <div className="product-showing mb-40">
                         <p>Menampilkan 1–22 of 32 hasil</p>

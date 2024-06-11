@@ -44,7 +44,7 @@ const HomeHeader = () => {
                   <div className="row align-items-center">
                      <div className="col-xl-3 col-lg-3 col-md-6 col-6 d-flex align-items-center">
                         <div className="logo logo-circle pos-rel">
-                           <Link to="/"><img src="img/logo/logo.png" alt="" /></Link>
+                           <Link to="/"><img src="/img/logo/logo.png" alt="" /></Link>
                         </div>
                      </div>
                      <div className="col-xl-9 col-lg-9 col-md-6 col-6">
@@ -66,14 +66,14 @@ const HomeHeader = () => {
                                  <Link to="/">Beranda</Link>
                                  <li><Link to="/brands">Brands</Link>
                                  </li>
-                                 <li><Link to="/doctorstwo">Dokter</Link>
-                                 </li>
+                                 {/* <li><Link to="/doctorstwo">Dokter</Link>
+                                 </li> */}
                                  <li><Link to="/shop">Shop</Link>
                                  </li>
                                  <li><a href="#">Halaman</a>
                                     <ul className="submenu">
                                        <li><Link to="/about">Tentang</Link></li>
-                                       <li><Link to="/appoinment">Konsultasi Dokter</Link></li>
+                                       <li><Link to="/appoinment">Konsultasi Apoteker</Link></li>
                                        <li><Link to="/contact">Kontak</Link></li>
                                     </ul>
                                  </li>

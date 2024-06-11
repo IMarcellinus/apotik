@@ -5,10 +5,15 @@ import Swal from 'sweetalert2'
 
 const Action = ({ value, row }) => {
   const { handleChangeStatus, handleOpenModal, setId, handleDetail, handleOpenDibayar} = useOrderContext()
+  console.log(row)
   const actions = [
     {
       type: 'Accept',
       onClick: () => {
+        if (row.type == 1) {
+          handleChangeStatus(row.id, 1)
+          return
+        }
         handleOpenDibayar(row.id)
       },
       show: row.status === 0

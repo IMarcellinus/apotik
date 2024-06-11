@@ -156,7 +156,6 @@ const OrderContextProvider = ({ children }) => {
         setIsDetail(true)
         setIsOpen(true)
     }
-    console.log(price)
 
     const handleChangeStatusDibayar = async() => {
         try {
@@ -193,7 +192,7 @@ const OrderContextProvider = ({ children }) => {
         }
     }
 
-    useDebounce(handleGetOrders, 500, [typeFilter], user.role === 'admin')
+    // useDebounce(handleGetOrders, 500, [typeFilter])
 
     const valueContext = {
         id,
