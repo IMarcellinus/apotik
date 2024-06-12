@@ -11,11 +11,11 @@ const TableSelector = () => {
       label: "Semua"
     },
     {
-      value: 1,
+      value: 2,
       label: "Order By Resep"
     },
     {
-      value: 2,
+      value: 1,
       label: "Order By Checkout"
     }
   ]
