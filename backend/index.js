@@ -50,6 +50,11 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+// Add the welcome route
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcome to the API Apotik' });
+});
+
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(SupplierRoute);
