@@ -1,11 +1,7 @@
 {
   "development": {
     "username": "root",
-<<<<<<< HEAD
-    "password": "root123",
-=======
     "password": "",
->>>>>>> origin/master
     "database": "apotik",
     "host": "127.0.0.1",
     "dialect": "mysql"

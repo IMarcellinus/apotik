@@ -3,12 +3,9 @@ import { createSupplier, deleteSupplierById, getSuppliers, updateSupplierById } 
 
 const router = express.Router();
 
-<<<<<<< HEAD
-=======
 // tambahkan best practice
 // router.get('/suppliers/:name', getSuppliers);
 
->>>>>>> origin/master
 // Get all suppliers
 router.get('/suppliers', getSuppliers);
 

@@ -1,84 +1,11 @@
-<<<<<<< HEAD
-import { Sequelize } from "sequelize";
-import Category from "../models/CategoriesModel.js";
-import ProductCategory from "../models/ProductCategoryModel.js";
-=======
 import { Op, Sequelize } from "sequelize";
 import Category from "../models/CategoriesModel.js";
 // import ProductCategory from "../models/ProductCategoryModel.js";
->>>>>>> origin/master
 import Product from "../models/ProductModel.js";
 import Supplier from "../models/SupplierModel.js";
 
 export const getProducts = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (products.length === 0) {
-      return res.status(400).json({
-        msg: "No products found",
-        status_code: 400,
-      });
-    }
-
-    // Append image URL to each product and exclude the image field
-    const productsWithImageUrl = products.map(product => {
-      const { image, ...productData } = product.toJSON();
-      
-      // Split the image string into an array of filenames and map to URLs
-      const imageUrlArray = image.split(',').map(img => ({ imageUrl: `http://localhost:5000/${img}` }));
-      
-      return {
-        ...productData,
-        imageUrl: imageUrlArray
-      };
-    });
-
-    res.status(200).json({
-      msg: "Products List",
-      status_code: 200,
-      products: productsWithImageUrl,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-
-export const getProductById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const product = await Product.findByPk(id, {
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (!product) {
-      return res.status(404).json({
-        msg: "Product not found",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: "Product details",
-      status_code: 200,
-      product: product,
-    });
-=======
     const { id, name, category_id } = req.query;
 
     if (id) {
@@ -247,7 +174,6 @@ export const getProductById = async (req, res) => {
         products: productsWithImageUrl,
       });
     }
->>>>>>> origin/master
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -303,21 +229,6 @@ export const createProduct = async (req, res) => {
     const imagePaths = req.files.map((file) => file.path);
 
     // Check if all required fields are provided
-<<<<<<< HEAD
-    if (
-      !name ||
-      !description ||
-      !stok ||
-      !satuan ||
-      !price ||
-      imagePaths.length === 0
-    ) {
-      return res.status(400).json({
-        msg: "All fields are required",
-        status_code: 400,
-      });
-    }
-=======
     // if (
     //   !name ||
     //   !description ||
@@ -331,7 +242,6 @@ export const createProduct = async (req, res) => {
     //     status_code: 400,
     //   });
     // }
->>>>>>> origin/master
 
     const product = await Product.create({
       supplier_name,
@@ -367,10 +277,6 @@ export const createProduct = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -512,96 +418,3 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-<<<<<<< HEAD
-
-export const searchProductsByName = async (req, res) => {
-  try {
-    const { name } = req.params;
-    
-    const products = await Product.findAll({
-      where: {
-        name: {
-          [Sequelize.Op.like]: `%${name}%` // Use Sequelize's Op.like for partial match
-        }
-      },
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (products.length === 0) {
-      return res.status(404).json({
-        msg: "No products found",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: `Products List ${name}`,
-      status_code: 200,
-      products: products,
-    });
-  } catch (error) {
-    console.error("Error searching products by name:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-export const getCategoriesByProductId = async (req, res) => {
-  try {
-    const { product_id } = req.params;
-
-    // Find the product entry by product_id
-    const product = await Product.findByPk(product_id, {
-      include: [
-        {
-          model: Category,
-          through: { attributes: [] }, // Exclude join table attributes
-        },
-      ],
-    });
-
-    if (!product) {
-      return res.status(404).json({
-        msg: "Product not found for the given product ID",
-        status_code: 404,
-      });
-    }
-
-    // Find category IDs associated with the given product ID
-    const productCategoryEntries = await ProductCategory.findAll({
-      where: { product_id: product_id },
-    });
-
-    // Extract category IDs from the result
-    const categoryIds = productCategoryEntries.map(entry => entry.category_id);
-
-    // Find categories with the extracted category IDs
-    const categories = await Category.findAll({
-      where: { id: categoryIds },
-    });
-
-    if (categories.length === 0) {
-      return res.status(404).json({
-        msg: "No categories found for the given product ID",
-        status_code: 404,
-      });
-    }
-
-    res.status(200).json({
-      msg: `Categories for Product ID ${product_id}`,
-      status_code: 200,
-      product_name: product.name,
-      categories: categories,
-    });
-  } catch (error) {
-    console.error("Error retrieving categories by product ID:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-=======
->>>>>>> origin/master

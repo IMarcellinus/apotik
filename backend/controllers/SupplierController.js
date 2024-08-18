@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-=======
 import { Op } from "sequelize";
->>>>>>> origin/master
 import Supplier from "../models/SupplierModel.js";
 
 export const getSuppliers = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const suppliers = await Supplier.findAll();
-=======
     // Ambil query parameter 'name'
     const { name } = req.query;
 
@@ -27,7 +21,6 @@ export const getSuppliers = async (req, res) => {
       // Jika tidak ada query 'name', tampilkan semua supplier
       suppliers = await Supplier.findAll();
     }
->>>>>>> origin/master
 
     if (suppliers.length === 0) {
       return res.status(400).json({
@@ -47,10 +40,6 @@ export const getSuppliers = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 export const createSupplier = async (req, res) => {
   try {
     // Check for required fields

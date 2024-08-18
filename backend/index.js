@@ -41,11 +41,7 @@ const fileFilter = (req, file, cb) => {
 app.use('/images', express.static(path.join(__dirname, 'images')));
 // Update multer to accept the 'image' field
 // app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
-<<<<<<< HEAD
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).array('image[]'));
-=======
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).array('image', 3));
->>>>>>> origin/master
 
 app.use(cors({
     origin: '*', // Replace with your allowed origin
@@ -54,14 +50,11 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
-<<<<<<< HEAD
-=======
 // Add the welcome route
 app.get('/', (req, res) => {
     res.status(200).json({ message: 'Welcome to the API Apotik' });
 });
 
->>>>>>> origin/master
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(SupplierRoute);

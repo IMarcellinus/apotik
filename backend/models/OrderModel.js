@@ -12,11 +12,7 @@ const OrderModel = db.define("orders", {
   },
   product_name: {
     type: DataTypes.STRING(255),
-<<<<<<< HEAD
-    allowNull: false,
-=======
     allowNull: true,
->>>>>>> origin/master
     references: {
       model: 'products',
       key: 'name'
@@ -24,13 +20,10 @@ const OrderModel = db.define("orders", {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
   },
-<<<<<<< HEAD
-=======
   image: {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
->>>>>>> origin/master
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
@@ -45,11 +38,7 @@ const OrderModel = db.define("orders", {
   },
   price: {
     type: DataTypes.BIGINT,
-<<<<<<< HEAD
-    allowNull: false,
-=======
     allowNull: true,
->>>>>>> origin/master
   },
   type: {
     type: DataTypes.INTEGER,
@@ -57,11 +46,7 @@ const OrderModel = db.define("orders", {
   },
   noresi: {
     type: DataTypes.STRING(255),
-<<<<<<< HEAD
-    allowNull: false,
-=======
     allowNull: true,
->>>>>>> origin/master
   },
   no_hp: {
     type: DataTypes.INTEGER,
