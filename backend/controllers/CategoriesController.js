@@ -1,13 +1,41 @@
+<<<<<<< HEAD
+=======
+import { Op } from "sequelize";
+>>>>>>> origin/master
 import Categories from "../models/CategoriesModel.js";
 
 export const getCategories = async (req, res) => {
   try {
+<<<<<<< HEAD
     const categories = await Categories.findAll();
 
     if (categories.length === 0) {
       return res.status(400).json({
         msg: "No categories found",
         status_code: 400,
+=======
+    let categories;
+
+    // Cek apakah ada query 'name'
+    if (req.query.name) {
+      // Jika ada query 'name', cari kategori berdasarkan nama
+      categories = await Categories.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${req.query.name}%`
+          }
+        }
+      });
+    } else {
+      // Jika tidak ada query 'name', tampilkan semua kategori
+      categories = await Categories.findAll();
+    }
+
+    if (categories.length === 0) {
+      return res.status(404).json({
+        msg: "No categories found",
+        status_code: 404,
+>>>>>>> origin/master
       });
     }
 
@@ -17,9 +45,16 @@ export const getCategories = async (req, res) => {
       categories: categories,
     });
   } catch (error) {
+<<<<<<< HEAD
     console.log(error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
+=======
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+
+>>>>>>> origin/master
 };
 
 export const createCategory = async (req, res) => {

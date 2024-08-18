@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 import { Sequelize } from "sequelize";
 import Category from "../models/CategoriesModel.js";
 import ProductCategory from "../models/ProductCategoryModel.js";
+=======
+import { Op, Sequelize } from "sequelize";
+import Category from "../models/CategoriesModel.js";
+// import ProductCategory from "../models/ProductCategoryModel.js";
+>>>>>>> origin/master
 import Product from "../models/ProductModel.js";
 import Supplier from "../models/SupplierModel.js";
 
 export const getProducts = async (req, res) => {
   try {
+<<<<<<< HEAD
     const products = await Product.findAll({
       include: [
         {
@@ -71,6 +78,176 @@ export const getProductById = async (req, res) => {
       status_code: 200,
       product: product,
     });
+=======
+    const { id, name, category_id } = req.query;
+
+    if (id) {
+      const product = await Product.findByPk(id, {
+        include: [
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+      });
+
+      if (!product) {
+        return res.status(404).json({
+          msg: `Product with ID ${id} not found`,
+          status_code: 404,
+        });
+      }
+
+      const { image, ...productData } = product.toJSON();
+      const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
+
+      const productWithImageUrl = {
+        ...productData,
+        imageUrl: imageUrlArray
+      };
+
+      return res.status(200).json({
+        msg: "Product Details",
+        status_code: 200,
+        product: productWithImageUrl,
+      });
+    } else if (name && category_id) {
+      const products = await Product.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${name}%`
+          }
+        },
+        include: [
+          {
+            model: Category,
+            where: { id: category_id },
+            attributes: ['name'],
+            through: { attributes: [] }, // Ensure the join table attributes are excluded
+          },
+        ],
+      });
+
+      if (products.length === 0) {
+        return res.status(404).json({
+          msg: `No products found with name ${name} in category with ID ${category_id}`,
+          status_code: 404,
+        });
+      }
+
+      const productsWithImageUrl = products.map(product => {
+        const { image, ...productData } = product.toJSON();
+        const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
+
+        return {
+          ...productData,
+          imageUrl: imageUrlArray
+        };
+      });
+
+      return res.status(200).json({
+        msg: "Products List by Name and Category",
+        status_code: 200,
+        products: productsWithImageUrl,
+      });
+    } else if (name) {
+      const productsByName = await Product.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${name}%`
+          }
+        },
+        include: [
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+      });
+
+      if (productsByName.length === 0) {
+        return res.status(404).json({
+          msg: `No products found with name ${name}`,
+          status_code: 404,
+        });
+      }
+
+      const productsWithImageUrl = productsByName.map(product => {
+        const { image, ...productData } = product.toJSON();
+        const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
+
+        return {
+          ...productData,
+          imageUrl: imageUrlArray
+        };
+      });
+
+      return res.status(200).json({
+        msg: "Products List by Name",
+        status_code: 200,
+        products: productsWithImageUrl,
+      });
+    } else if (category_id) {
+      const productsByCategory = await Product.findAll({
+        include: [
+          {
+            model: Category,
+            where: { id: category_id },
+            attributes: ['name'],
+            through: { attributes: [] }, // Ensure the join table attributes are excluded
+          },
+        ],
+      });
+
+      if (productsByCategory.length === 0) {
+        return res.status(404).json({
+          msg: `No products found in category with ID ${category_id}`,
+          status_code: 404,
+        });
+      }
+
+      const productsWithImageUrl = productsByCategory.map(product => {
+        const { image, ...productData } = product.toJSON();
+        const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
+
+        return {
+          ...productData,
+          imageUrl: imageUrlArray
+        };
+      });
+
+      return res.status(200).json({
+        msg: "Products List by Category",
+        status_code: 200,
+        products: productsWithImageUrl,
+      });
+    } else {
+      const allProducts = await Product.findAll({
+        include: [
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+      });
+
+      const productsWithImageUrl = allProducts.map(product => {
+        const { image, ...productData } = product.toJSON();
+        const imageUrlArray = image.split(',').map(img => `http://localhost:5000/${img}`);
+
+        return {
+          ...productData,
+          imageUrl: imageUrlArray
+        };
+      });
+
+      return res.status(200).json({
+        msg: "All Products List",
+        status_code: 200,
+        products: productsWithImageUrl,
+      });
+    }
+>>>>>>> origin/master
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -126,6 +303,7 @@ export const createProduct = async (req, res) => {
     const imagePaths = req.files.map((file) => file.path);
 
     // Check if all required fields are provided
+<<<<<<< HEAD
     if (
       !name ||
       !description ||
@@ -139,6 +317,21 @@ export const createProduct = async (req, res) => {
         status_code: 400,
       });
     }
+=======
+    // if (
+    //   !name ||
+    //   !description ||
+    //   !stok ||
+    //   !satuan ||
+    //   !price ||
+    //   imagePaths.length === 0
+    // ) {
+    //   return res.status(400).json({
+    //     msg: "All fields are required",
+    //     status_code: 400,
+    //   });
+    // }
+>>>>>>> origin/master
 
     const product = await Product.create({
       supplier_name,
@@ -174,7 +367,10 @@ export const createProduct = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -316,6 +512,7 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+<<<<<<< HEAD
 
 export const searchProductsByName = async (req, res) => {
   try {
@@ -406,3 +603,5 @@ export const getCategoriesByProductId = async (req, res) => {
   }
 };
 
+=======
+>>>>>>> origin/master
