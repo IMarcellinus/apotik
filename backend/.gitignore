@@ -1,9 +1,5 @@
 # Node.js
-<<<<<<< HEAD
-node_modules/
-=======
-node_modules
->>>>>>> origin/master
+/node_modules
 
 # Logs
 logs
@@ -30,12 +26,7 @@ logs
 .env*
 
 # Ignore the images folder and its contents
-<<<<<<< HEAD
 images/
 *.jpg
 *.png
 *.jpeg
-=======
-images/*
-!images/.gitkeep
->>>>>>> origin/master
